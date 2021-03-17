@@ -2,7 +2,10 @@ package com.ramilaiv.tomiatesttasktesteditor.controller;
 
 import com.ramilaiv.tomiatesttasktesteditor.service.ServiceEditor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/editor")
@@ -12,33 +15,33 @@ public class Controller {
     ServiceEditor serviceEditor;
 
     @GetMapping("/add")
-    public String add(@RequestParam String string) {
-        return serviceEditor.add(string);
+    public void add(@RequestParam String string) {
+        serviceEditor.add(string);
     }
 
-    @GetMapping("/add/possition")
-    public String addWithPosition(@RequestParam String string, @RequestParam int possition) {
-        return serviceEditor.addWithPossition(string, possition);
+    @GetMapping("/add/position")
+    public void addWithPosition(@RequestParam String string, @RequestParam int position) {
+        serviceEditor.addWithPosition(string, position);
     }
 
     @GetMapping("/remove")
-    public String remove(@RequestParam int fromPosition, @RequestParam int toPosition) {
-        return serviceEditor.remove(fromPosition, toPosition);
+    public void remove(@RequestParam int fromPosition, @RequestParam int toPosition) {
+        serviceEditor.remove(fromPosition, toPosition);
     }
 
     @GetMapping("/italic")
-    public String italic(int fromPosition, int toPosition) {
-        return serviceEditor.italic(fromPosition, toPosition);
+    public void italic(int fromPosition, int toPosition) {
+        serviceEditor.italic(fromPosition, toPosition);
     }
 
     @GetMapping("/bold")
-    public String bold(int fromPosition, int toPosition) {
-        return serviceEditor.bold(fromPosition, toPosition);
+    public void bold(int fromPosition, int toPosition) {
+        serviceEditor.bold(fromPosition, toPosition);
     }
 
     @GetMapping("/underline")
-    public String underline(int fromPosition, int toPosition) {
-        return serviceEditor.underline(fromPosition, toPosition);
+    public void underline(int fromPosition, int toPosition) {
+        serviceEditor.underline(fromPosition, toPosition);
     }
 
     @GetMapping("/redo")
@@ -52,7 +55,7 @@ public class Controller {
     }
 
     @GetMapping("/print")
-    public String print() {
-        return serviceEditor.print();
+    public void print() {
+        serviceEditor.print();
     }
 }

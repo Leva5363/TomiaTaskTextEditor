@@ -1,84 +1,80 @@
 package com.ramilaiv.tomiatesttasktesteditor.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.font.TextAttribute;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class ServiceEditor {
 
-    private static final String START_LABEL_STRONG = "<strong>";
-    private static final String END_LABEL_STRONG = "</strong>";
-    private static final String START_LABEL_ITALIC = "<i>";
-    private static final String END_LABEL_ITALIC = "</i>";
-    private static final String START_LABEL_UNDERLINE = "<u>";
-    private static final String END_LABEL_UNDERLINE  = "</u>";
+    @Autowired
+    ChangeManager manager;
 
-    private StringBuilder words = new StringBuilder();
-
-    public String add(String s1) {
-        return words.append(s1).toString();
+    public void add(String string) {
+        manager.addChangeable(new MyLabel(manager.getChangable().getLabel().getText().concat(string)));
     }
 
-    public String addWithPossition(String s, int possition) {
-        words = new StringBuilder(deleteLabels(words.toString()));
-        if (possition > words.length())
-            possition = words.length();
-        return words.insert(possition, s).toString();
+    public void addWithPosition(String s, int position) {
+        StringBuilder stringBuilder = new StringBuilder(manager.getChangable().getLabel()
+            .getText());
+        if (position > stringBuilder.length())
+            position = stringBuilder.length();
+        stringBuilder.insert(position, s);
+         manager.addChangeable(new MyLabel(stringBuilder.toString()));
     }
 
-    public String remove(int fromPosition, int toPosition) {
-        words = new StringBuilder(deleteLabels(words.toString()));
-        return words.delete(fromPosition, toPosition).toString();
+    public void remove(int fromPosition, int toPosition) {
+        StringBuilder stringBuilder = new StringBuilder(manager.getChangable().getLabel()
+            .getText()).delete(fromPosition, toPosition);
+         manager.addChangeable(new MyLabel(stringBuilder.toString()));
     }
 
-    public String italic(int fromPosition, int toPosition) {
-        words = new StringBuilder(deleteLabels(words.toString()));
-        words.insert(fromPosition, START_LABEL_ITALIC);
-        words.insert(toPosition + START_LABEL_ITALIC.length() + 1, END_LABEL_ITALIC);
-        return words.toString();
+    public void italic(int fromPosition, int toPosition) {
+        StringBuilder stringBuilder = new StringBuilder(manager.getChangable().getLabel()
+            .getText());
+        MyLabel label = new MyLabel();
+        label.setText(stringBuilder.toString());
+        label.setFont(new Font("TimesRoman", Font.ITALIC, 18));
+        manager.addChangeable(label);
     }
 
-    public String bold(int fromPosition, int toPosition) {
-        words = new StringBuilder(deleteLabels(words.toString()));
-        words.insert(fromPosition, START_LABEL_STRONG);
-        words.insert(toPosition + START_LABEL_STRONG.length() + 1, END_LABEL_STRONG);
-        return words.toString();
+    public void bold(int fromPosition, int toPosition) {
+        StringBuilder stringBuilder = new StringBuilder(manager.getChangable().getLabel()
+            .getText());
+        MyLabel label = new MyLabel();
+        label.setText(stringBuilder.toString());
+        label.setFont(new Font("TimesRoman", Font.BOLD, 18));
+        manager.addChangeable(label);
     }
 
-    public String underline(int fromPosition, int toPosition) {
-        words = new StringBuilder(deleteLabels(words.toString()));
-        words.insert(fromPosition, START_LABEL_UNDERLINE);
-        words.insert(toPosition + START_LABEL_UNDERLINE.length() + 1, END_LABEL_UNDERLINE);
-        return words.toString();
+    public void underline(int fromPosition, int toPosition) {
+        StringBuilder stringBuilder = new StringBuilder(manager.getChangable().getLabel()
+            .getText());
+        Map<TextAttribute, Integer> fontAttributes = new HashMap<TextAttribute, Integer>();
+        fontAttributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
+        MyLabel label = new MyLabel();
+        label.setText(stringBuilder.toString());
+        label.setFont(new Font("TimesRoman", Font.PLAIN, 18).deriveFont(fontAttributes));
+        manager.addChangeable(label);
     }
 
     public void redo() {
+         manager.redo();
     }
 
     public void undo() {
+         manager.undo();
     }
 
-    public String print() {
-        return words.toString();
-    }
-
-    private String deleteLabels(String s) {
-        if (s.contains(START_LABEL_STRONG) && s.contains(END_LABEL_STRONG)) {
-            s = s.replaceAll(START_LABEL_STRONG,"");
-            s = s.replaceAll(END_LABEL_STRONG,"");
-            return s;
-        }
-        if (s.contains(START_LABEL_ITALIC) && s.contains(END_LABEL_ITALIC)) {
-            s = s.replaceAll(START_LABEL_ITALIC, "");
-            s = s.replaceAll(END_LABEL_ITALIC, "");
-            return s;
-        }
-        if (s.contains(START_LABEL_UNDERLINE) && s.contains(END_LABEL_UNDERLINE)) {
-            s = s.replaceAll(START_LABEL_UNDERLINE, "");
-            s = s.replaceAll(END_LABEL_UNDERLINE, "");
-            return s;
-        }
-        else {
-            return words.toString();
-        }
+    public void print() {
+        JFrame frame = new JFrame("Text Editor");
+        frame.setVisible(true);
+        frame.setSize(420, 240);
+        frame.add((Component) manager.getChangable());
     }
 }
