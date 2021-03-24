@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.text.AttributedString;
+
 @RestController
 @RequestMapping("/editor")
 public class Controller {
@@ -30,18 +32,18 @@ public class Controller {
     }
 
     @GetMapping("/italic")
-    public void italic(int fromPosition, int toPosition) {
-        serviceEditor.italic(fromPosition, toPosition);
+    public void italic() {
+        serviceEditor.italic();
     }
 
     @GetMapping("/bold")
     public void bold(int fromPosition, int toPosition) {
-        serviceEditor.bold(fromPosition, toPosition);
+        serviceEditor.bold();
     }
 
     @GetMapping("/underline")
     public void underline(int fromPosition, int toPosition) {
-        serviceEditor.underline(fromPosition, toPosition);
+        serviceEditor.underline();
     }
 
     @GetMapping("/redo")

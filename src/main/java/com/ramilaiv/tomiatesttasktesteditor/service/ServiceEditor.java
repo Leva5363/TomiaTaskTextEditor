@@ -34,7 +34,7 @@ public class ServiceEditor {
          manager.addChangeable(new MyLabel(stringBuilder.toString()));
     }
 
-    public void italic(int fromPosition, int toPosition) {
+    public void italic() {
         StringBuilder stringBuilder = new StringBuilder(manager.getChangable().getLabel()
             .getText());
         MyLabel label = new MyLabel();
@@ -43,7 +43,7 @@ public class ServiceEditor {
         manager.addChangeable(label);
     }
 
-    public void bold(int fromPosition, int toPosition) {
+    public void bold() {
         StringBuilder stringBuilder = new StringBuilder(manager.getChangable().getLabel()
             .getText());
         MyLabel label = new MyLabel();
@@ -52,7 +52,7 @@ public class ServiceEditor {
         manager.addChangeable(label);
     }
 
-    public void underline(int fromPosition, int toPosition) {
+    public void underline() {
         StringBuilder stringBuilder = new StringBuilder(manager.getChangable().getLabel()
             .getText());
         Map<TextAttribute, Integer> fontAttributes = new HashMap<TextAttribute, Integer>();

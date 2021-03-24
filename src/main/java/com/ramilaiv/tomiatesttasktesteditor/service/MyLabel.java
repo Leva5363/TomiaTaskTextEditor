@@ -6,11 +6,11 @@ import java.awt.*;
 public class MyLabel extends Label implements Changeable {
 
     public MyLabel()  {
+        super();
     }
 
     public MyLabel(String string) {
-        super();
-        this.setText(string);
+        super(string);
     }
 
     @Override

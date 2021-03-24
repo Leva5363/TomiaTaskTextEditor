@@ -1,0 +1,27 @@
+Write a simple Java program, that imitates a word editor, having the following methods:
+
+
+
+add(String s)
+
+add(String s, int position)
+
+remove(int fromPosition, int toPosition)
+
+italic()
+
+bold()
+
+underline()
+
+redo()
+
+undo()
+
+print()
+
+
+
+Optional bonus:
+
+Make all of these methods accessible via a Rest API.

@@ -1,36 +1,15 @@
 package com.ramilaiv.tomiatesttasktesteditor.service;
 
 import org.springframework.stereotype.Component;
-
-import java.awt.*;
-import java.util.List;
-
-import java.util.ArrayList;
-
-
-
-import javax.swing.event.ChangeEvent;
-
-
-
 /**
-
  * Manages a Queue of Changables to perform undo and/or redo operations. Clients can add implementations of the Changeable
 
  * class to this class, and it will manage undo/redo as a Queue.
-
- *
-
- * @author Greg Cope
-
- *
 
  */
 
 @Component
 public class ChangeManager {
-
-
     //the current index node
 
     private Node currentIndex = null;
@@ -45,11 +24,8 @@ public class ChangeManager {
      */
 
     public ChangeManager() {
-
         currentIndex = parentNode;
-
     }
-
 
     /**
      * Creates a new ChangeManager which is a duplicate of the parameter in both contents and current index.
@@ -58,24 +34,17 @@ public class ChangeManager {
      */
 
     public ChangeManager(ChangeManager manager) {
-
         this();
-
         currentIndex = manager.currentIndex;
-
     }
-
 
     /**
      * Clears all Changables contained in this manager.
      */
 
     public void clear() {
-
         currentIndex = parentNode;
-
     }
-
 
     /**
      * Adds a Changeable to manage.
@@ -83,32 +52,18 @@ public class ChangeManager {
      * @param changeable
      */
 
-    public String addChangeable(Changeable changeable) {
-
+    public void addChangeable(Changeable changeable) {
         Node node = new Node(changeable);
-
         currentIndex.right = node;
-
         node.left = currentIndex;
-
         currentIndex = node;
-        return currentIndex.changeable.getLabel().getText();
-
     }
-
-    /**
-     * Adds a Changeable to manage.
-     *
-     * @param changeable
-     */
 
     public Changeable getChangable() {
-
         if(currentIndex.changeable == null){
             return new MyLabel("");
         }
         return currentIndex.changeable;
-
     }
 
 
@@ -119,9 +74,7 @@ public class ChangeManager {
      */
 
     public boolean canUndo() {
-
         return currentIndex != parentNode;
-
     }
 
 
@@ -132,9 +85,7 @@ public class ChangeManager {
      */
 
     public boolean canRedo() {
-
         return currentIndex.right != null;
-
     }
 
 
@@ -144,7 +95,7 @@ public class ChangeManager {
      * @throws IllegalStateException if canUndo returns false.
      */
 
-    public Label undo() {
+    public void undo() {
 
         //validate
 
@@ -160,7 +111,7 @@ public class ChangeManager {
 
         //set index
 
-          return moveLeft();
+        moveLeft();
 
     }
 
@@ -171,17 +122,11 @@ public class ChangeManager {
      * @throws IllegalStateException If the left index is null.
      */
 
-    private  Label moveLeft() {
-
+    private  void moveLeft() {
         if (currentIndex.left == null) {
-
             throw new IllegalStateException("Internal index set to null.");
-
         }
-
         currentIndex = currentIndex.left;
-
-        return currentIndex.changeable.getLabel();
     }
 
 
@@ -192,15 +137,10 @@ public class ChangeManager {
      */
 
     private void moveRight() {
-
         if (currentIndex.right == null) {
-
             throw new IllegalStateException("Internal index set to null.");
-
         }
-
         currentIndex = currentIndex.right;
-
     }
 
 
@@ -211,13 +151,8 @@ public class ChangeManager {
      */
 
     public void redo() {
-
-        //validate
-
         if (!canRedo()) {
-
             throw new IllegalStateException("Cannot redo. Index is out of range.");
-
         }
 
         //reset index
@@ -225,41 +160,25 @@ public class ChangeManager {
         moveRight();
 
         //redo
-
         currentIndex.changeable.redo();
-
     }
 
 
 
     /**
      * Inner class to implement a doubly linked list for our queue of Changeables.
-     *
-     * @author Greg Cope
      */
-
     private class Node {
-
         private Node left = null;
-
         private Node right = null;
-
-
         private final Changeable changeable;
 
-
         public Node(Changeable c) {
-
             changeable = c;
-
         }
-
 
         public Node() {
-
             changeable = null;
-
         }
-
     }
 }
